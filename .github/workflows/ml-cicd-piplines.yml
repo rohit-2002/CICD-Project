@@ -10,12 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Step 1: Checkout the code
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       # Step 2: Download Iris dataset (if not in the repo)
       - name: Download Iris Dataset from UCI
         run: |
-          curl -o iris.csv https://github.com/rohit-2002/CICD-Project/blob/master/iris.csv
+          curl -o iris.csv https://raw.githubusercontent.com/rohit-2002/CICD-Project/main/iris.csv
 
       # Step 3: Set up Python environment
       - name: Set up Python
@@ -26,9 +27,9 @@ jobs:
       # Step 4: Install dependencies
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; else echo "requirements.txt not found"; fi
 
       # Step 5: Train the model
       - name: Train Model
         run: |
-          python train_model.py
+          if [ -f train_model.py ]; then python train_model.py; else echo "train_model.py not found"; exit 1; fi
